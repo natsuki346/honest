@@ -27,8 +27,8 @@ export function PostCard({ post, onTagClick }: PostCardProps) {
   const avatarBg    = isLight
     ? 'linear-gradient(135deg, #FFF3CC, #FFD878)'
     : 'linear-gradient(135deg, #1E1240, #2D1A5E)'
-  const tagBg       = isLight ? '#FFF8E6' : '#1A1830'
-  const tagColor    = isLight ? '#C07800' : '#9B8FFF'
+  const tagBg    = isLight ? '#F0A500' : '#9B8FFF'
+  const tagColor = '#ffffff'
   const displayName = isLight ? `@${post.profiles.username}` : '匿名'
   const initial     = isLight ? post.profiles.username[0].toUpperCase() : '?'
 
@@ -76,8 +76,14 @@ export function PostCard({ post, onTagClick }: PostCardProps) {
               <button
                 key={tag}
                 onClick={() => onTagClick?.(tag)}
-                className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold transition-opacity active:opacity-70"
-                style={{ background: tagBg, color: tagColor }}
+                className="rounded-full transition-opacity active:opacity-70"
+                style={{
+                  padding: '6px 14px',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  background: tagBg,
+                  color: tagColor,
+                }}
               >
                 #{tag}
               </button>
@@ -87,50 +93,72 @@ export function PostCard({ post, onTagClick }: PostCardProps) {
 
         {/* ── アクションバー ── */}
         <div
-          className="flex items-center gap-5"
+          className="flex items-center justify-between"
           style={{ paddingTop: '8px', borderTop: '1px solid var(--border)' }}
         >
-          <button
-            onClick={() => setLiked(p => !p)}
-            className="flex items-center gap-1.5 text-[12px] transition-colors active:scale-90"
-            style={{ color: liked ? accent : 'var(--sub)' }}
+          {/* 左：スコア数字のみ */}
+          <span
+            className="text-[15px] font-semibold tabular-nums"
+            style={{ color: liked ? accent : '#888888', transition: 'color 0.15s ease' }}
           >
-            <HeartIcon filled={liked} />
-            <span>{(post.like_count ?? 0) + (liked ? 1 : 0)}</span>
-          </button>
+            {(post.like_count ?? 0) + (liked ? 1 : 0)}
+          </span>
 
-          <button
-            className="flex items-center gap-1.5 text-[12px] active:scale-90 transition-transform"
-            style={{ color: 'var(--sub)' }}
-          >
-            <ReplyIcon />
-            <span>{post.reply_count ?? 0}</span>
-          </button>
+          {/* 右：コメント＋共感ボタン */}
+          <div className="flex items-center gap-2">
+            {/* コメントボタン */}
+            <button
+              className="flex items-center gap-1 text-[12px]"
+              style={{ color: '#888888' }}
+            >
+              <CommentIcon />
+              <span>{post.reply_count ?? 0}</span>
+            </button>
+
+            {/* 共感ボタン（32×32、border-radius 8px） */}
+            <button
+              onClick={() => setLiked(p => !p)}
+              className="flex items-center justify-center"
+              style={{
+                width: 32,
+                height: 32,
+                borderRadius: 8,
+                background:  liked ? accent    : 'transparent',
+                border:      liked ? 'none'    : '1px solid #444444',
+                color:       liked ? '#ffffff' : '#888888',
+                transition:  'background 0.15s ease, border 0.15s ease, color 0.15s ease, transform 0.1s ease',
+              }}
+              onPointerDown={e => (e.currentTarget.style.transform = 'scale(0.9)')}
+              onPointerUp={e   => (e.currentTarget.style.transform = 'scale(1)')}
+              onPointerLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
+            >
+              <UpvoteIcon />
+            </button>
+          </div>
         </div>
       </div>
     </article>
   )
 }
 
-function HeartIcon({ filled }: { filled: boolean }) {
+function UpvoteIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="w-4 h-4"
-      fill={filled ? 'currentColor' : 'none'}
-      stroke="currentColor" strokeWidth={1.8}
-      strokeLinecap="round" strokeLinejoin="round"
+    <svg viewBox="0 0 24 24" className="w-[15px] h-[15px]"
+      fill="currentColor" stroke="none"
     >
-      <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+      <path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" />
+      <path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3v11z" />
     </svg>
   )
 }
 
-function ReplyIcon() {
+function CommentIcon() {
   return (
     <svg viewBox="0 0 24 24" className="w-4 h-4"
       fill="none" stroke="currentColor" strokeWidth={1.8}
       strokeLinecap="round" strokeLinejoin="round"
     >
-      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+      <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
     </svg>
   )
 }
