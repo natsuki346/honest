@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+/* ============================================================
+   デフォルトトークン
+   ============================================================ */
+:root {
+  --bg:           #FAFAF8;
+  --card:         #FFFFFF;
+  --accent:       #F0A500;
+  --accent-glow:  rgba(240,165,0,0.15);
+  --text:         #1A1A1A;
+  --sub:          #888888;
+  --border:       rgba(0,0,0,0.06);
+  --tab-line:     #F0A500;
+  --nav-bg:       rgba(250,250,248,0.96);
+  --header-bg:    rgba(250,250,248,0.92);
+  /* 後方互換 */
+  --divider:      var(--border);
+  --background:   var(--bg);
+  --foreground:   var(--text);
+  --nav-height:   60px;
+}
+
+/* ============================================================
+   光モード
+   ============================================================ */
+.mode-light,
+[data-mode="light"] {
+  --bg:           #FAFAF8;
+  --card:         #FFFFFF;
+  --accent:       #F0A500;
+  --accent-glow:  rgba(240,165,0,0.15);
+  --text:         #1A1A1A;
+  --sub:          #888888;
+  --border:       rgba(0,0,0,0.06);
+  --tab-line:     #F0A500;
+  --nav-bg:       rgba(250,250,248,0.96);
+  --header-bg:    rgba(250,250,248,0.92);
+  --divider:      var(--border);
+  --background:   var(--bg);
+  --foreground:   var(--text);
+}
+
+/* ============================================================
+   影モード
+   ============================================================ */
+.mode-shadow,
+[data-mode="shadow"] {
+  --bg:           #08080C;
+  --card:         #111118;
+  --accent:       #9B8FFF;
+  --accent-glow:  rgba(155,143,255,0.2);
+  --text:         #F0EEF8;
+  --sub:          #666680;
+  --border:       rgba(255,255,255,0.06);
+  --tab-line:     #9B8FFF;
+  --nav-bg:       rgba(13,13,20,0.96);
+  --header-bg:    rgba(8,8,12,0.92);
+  --divider:      var(--border);
+  --background:   var(--bg);
+  --foreground:   var(--text);
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+}
+
+/* ============================================================
+   Body / HTML
+   ============================================================ */
+body {
+  background: #1A1A24;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+html { height: 100%; }
+
+/* ============================================================
+   投稿モーダル：上からスライドイン
+   ============================================================ */
+@keyframes slide-from-top {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(0); }
+}
+.modal-slide-down {
+  animation: slide-from-top 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
